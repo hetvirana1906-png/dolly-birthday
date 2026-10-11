@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Dolla 🎀</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:"Trebuchet MS",sans-serif;
+ color:#63384b;
+ text-align:center;
+ background:linear-gradient(135deg,#fff0f5,#ffe4e1,#fff4e6);
+}
+.screen{
+ display:none;
+ min-height:100vh;
+ padding:24px 14px;
+ align-items:center;
+ justify-content:center;
+ flex-direction:column;
+ animation:fade .4s ease;
+}
+.screen.active{display:flex}
+.card{
+ width:100%;
+ max-width:760px;
+ padding:28px 20px;
+ border-radius:28px;
+ background:rgba(255,255,255,.94);
+ box-shadow:0 12px 40px #bd668c24;
+}
+h1{
+ font-family:Georgia,serif;
+ font-size:clamp(36px,8vw,60px);
+ font-weight:normal;
+ line-height:1.15;
+}
+h1 span{color:#d84f83;font-style:italic}
+h2{font-family:Georgia,serif;font-weight:normal}
+p{line-height:1.8}
+.small{
+ color:#b84d78;
+ letter-spacing:3px;
+ font-size:12px;
+ font-weight:bold;
+ text-transform:uppercase;
+}
+.big{font-size:76px;animation:float 3s infinite}
+button{
+ background:#d84f83;
+ color:white;
+ border:0;
+ padding:13px 20px;
+ border-radius:30px;
+ cursor:pointer;
+ font-size:14px;
+ font-weight:bold;
+ margin:7px;
+ transition:.2s;
+}
+button:hover{transform:translateY(-2px)}
+.secondary{background:white;color:#d84f83;border:1px solid #edc5d5}
+input{
+ width:100%;
+ max-width:300px;
+ padding:14px;
+ margin:10px 0;
+ border:1px solid #edb7cc;
+ border-radius:12px;
+ text-align:center;
+ font-size:16px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+ margin-top:22px;
+}
+.gift{
+ background:#fff0f5;
+ color:#63384b;
+ border:1px solid #f5d1df;
+ border-radius:20px;
+ padding:20px 12px;
+ min-height:130px;
+}
+.gift:nth-child(2){background:#fff2e7}
+.gift:nth-child(3){background:#f0f3e9}
+.gift:nth-child(4){background:#f0eaff}
+.gift span{display:block;font-size:36px;margin-bottom:8px}
+.gift small{display:block;margin-top:7px;line-height:1.5}
+.message{
+ text-align:left;
+ background:#fffaf6;
+ padding:20px;
+ border-radius:18px;
+ line-height:1.9;
+}
+.message p{margin:0 0 16px}
+.shayari{
+ background:linear-gradient(135deg,#fff0f5,#fff8f2);
+ border:1px solid #f4ccdc;
+ padding:20px 12px;
+ margin:20px 0;
+ border-radius:20px;
+ font-family:Georgia,serif;
+ font-style:italic;
+ font-size:17px;
+ line-height:2;
+ color:#a7446c;
+}
+.gamebox{
+ background:#fff6fa;
+ border:1px solid #f4ccdc;
+ border-radius:20px;
+ padding:18px;
+ margin:18px 0;
+}
+.choice{
+ display:block;
+ width:100%;
+ max-width:430px;
+ margin:10px auto;
+ border-radius:15px;
+ background:white;
+ color:#63384b;
+ border:1px solid #f0c8d8;
+ padding:14px;
+}
+.result{font-weight:bold;color:#a7446c;min-height:28px}
+#confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:20}
+.piece{position:absolute;top:-30px;animation:fall 3.5s linear forwards}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{50%{transform:translateY(-9px)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@media(max-width:500px){
+ .grid{grid-template-columns:1fr}
+ .card{padding:22px 15px}
+}
+</style>
+</head>
+
+<body>
+<div id="confetti"></div>
+
+<!-- PASSWORD SCREEN -->
+<section class="screen active" id="lock">
+ <div class="card">
+  <div class="big">🎀</div>
+  <p class="small">A tiny secret is waiting</p>
+  <h1>For someone <span>special</span> 💗</h1>
+  <p>A little birthday world has been made just for you.</p>
+  <p>Enter the secret password to unlock it. ✨</p>
+
+  <form id="unlockForm">
+   <input id="password" placeholder="Enter password" required>
+   <br>
+   <button type="submit">Unlock my surprise 🔐</button>
+  </form>
+  <p id="error" style="color:#d84f83"></p>
+  <small>Hint: your cute nickname 😉</small>
+ </div>
+</section>
+
+<!-- BIRTHDAY REVEAL -->
+<section class="screen" id="reveal">
+ <div class="card">
+  <div class="big">🎂</div>
+  <p class="small">Today is all about you</p>
+  <h1>Happy Birthday,<br><span>Dolla!</span> 💗</h1>
+  <p>Today deserves extra smiles, extra cake, and a whole lot of love.</p>
+  <p>Made with love by your friend, <b>Hetvi</b>. 🫶🏻</p>
+  <button onclick="go('gifts')">Enter your surprise ✨</button>
+ </div>
+</section>
+
+<!-- GIFT MENU -->
+<section class="screen" id="gifts">
+ <div class="card">
+  <p class="small">A few little surprises</p>
+  <h2>Choose what to open 🎁</h2>
+  <p>Sweet messages and silly games are waiting for you.</p>
+
+  <div class="grid">
+   <button class="gift" onclick="go('memories')">
+    <span>🌷</span>Little Memories
+    <small>Our friendship moments</small>
+   </button>
+   <button class="gift" onclick="go('letter')">
+    <span>💌</span>A Letter
+    <small>Something from the heart</small>
+   </button>
+   <button class="gift" onclick="go('reasons')">
+    <span>💗</span>Reasons You're Special
+    <small>A little reminder</small>
+   </button>
+   <button class="gift" onclick="go('games')">
+    <span>🎮</span>Fun & Games
+    <small>Play before your cake!</small>
+   </button>
+  </div>
+ </div>
+</section>
+
+<!-- MEMORIES -->
+<section class="screen" id="memories">
+ <div class="card">
+  <p class="small">Our friendship scrapbook</p>
+  <h2>Little moments, big feelings 🫶</h2>
+
+  <div class="message">
+   <p>☕ <b>That ISKCON Temple Day</b><br>
+   Remember the day we went to ISKCON Temple and you asked for chai, and I said yes? 😂☕ Even the smallest moments with you become memories I never want to forget. And on the way to the bus stand, you started teasing people and making me laugh with that legendary “paji” of yours. 😭😂 Who knew such a simple day would become a memory that makes me smile whenever I think about us? 🤍</p>
+
+   <p>🌸 <b>Our Ved Mandir Conversations</b><br>
+   We sit at Ved Mandir and start talking about one thing, then somehow end up discussing a hundred completely different things. 😭💗 Time flies when we're together, and there's always something left to say. It's not even about where we sit or what we talk about—it's about how ordinary moments become special because they're with you. 🥹</p>
+
+   <p>🤍 <b>Being There for Each Other</b><br>
+   I hope you know you don't have to be happy all the time around me. You can have bad days, overthink things, or simply sit quietly. You don't always need the right words. I hope we keep supporting each other, celebrating little victories, and reminding each other that we're not alone in this friendship. 💗</p>
+
+   <p>🌷 <b>A Whole Lifetime of Friendship</b><br>
+   We still have so many places to go, silly things to do, and conversations to have. One day, we'll be old ladies sitting together, laughing about these memories and still annoying each other. 😂👵🏻 I hope we keep choosing this friendship through every new chapter of life. No escaping me, okay? ♾️🤍</p>
+  </div>
+
+  <button onclick="go('gifts')">← Back to surprises</button>
+ </div>
+</section>
+
+<!-- LETTER -->
+<section class="screen" id="letter">
+ <div class="card">
+  <p class="small">Read this slowly</p>
+  <h2>A letter for Dolla 💌</h2>
+
+  <div class="message">
+   <p>Dear Dolla,</p>
+
+   <p>Happy birthday to you! 🥹💗 I hope today reminds you how loved, valued, and special you are.</p>
+
+   <p>Thank you for being part of my life, for the laughs, the random conversations, and all the little moments that turn into memories. Some days don't need a big plan to become unforgettable; sometimes all it takes is the right person beside you.</p>
+
+   <p>I hope this new year of your life brings you closer to your dreams, gives you peace when things feel difficult, and surrounds you with people who appreciate you for who you really are.</p>
+
+   <p>And please remember: no matter how busy life gets or how much things change, I hope we keep making memories, laughing at our own nonsense, and cheering each other on.</p>
+
+   <p>Enjoy your cake, take lots of pictures, make a big wish, and let yourself be celebrated. You deserve lovely things—not just today, but every day. 🎂🌷</p>
+
+   <p>With lots of love,<br><b>Your friend, Hetvi 💗</b></p>
+  </div>
+
+  <div class="shayari">
+   🫶🏻💗 Rishta apna lafzon ka mohtaaj nahi, 🥹🤍<br>
+   🦋 Dosti apni kisi naam ki mohtaaj nahi, ♾️💞<br>
+   🌷 Saalo beet gaye, phir bhi dil kehte hain, 🫂✨<br>
+   ❤️ Tu hai toh kisi aur ki talaash nahi. 🧿💗
+  </div>
+
+  <button onclick="go('gifts')">← Back to surprises</button>
+ </div>
+</section>
+
+<!-- REASONS -->
+<section class="screen" id="reasons">
+ <div class="card">
+  <p class="small">A little reminder</p>
+  <h2>Why you're special 💗</h2>
+
+  <div class="grid">
+   <div class="gift"><span>💖</span><b>Your heart</b><small>The care you give to people.</small></div>
+   <div class="gift"><span>😂</span><b>Your humour</b><small>You make ordinary moments fun.</small></div>
+   <div class="gift"><span>🌷</span><b>Your personality</b><small>You don't need to be anyone else.</small></div>
+   <div class="gift"><span>✨</span><b>Your dreams</b><small>You deserve to chase them.</small></div>
+   <div class="gift"><span>🫶</span><b>Our friendship</b><small>The memories we've made.</small></div>
+   <div class="gift"><span>🎀</span><b>Simply you</b><small>You deserve love just as you are.</small></div>
+  </div>
+
+  <button onclick="go('gifts')">← Back to surprises</button>
+ </div>
+</section>
+
+<!-- GAMES -->
+<section class="screen" id="games">
+ <div class="card">
+  <p class="small">Birthday game zone</p>
+  <h2>Play with Hetvi's surprise 🎮</h2>
+  <p>Three tiny games. No photos, no videos—just fun! 💗</p>
+
+  <!-- GAME 1 -->
+  <div class="gamebox">
+   <h2>🎁 Game 1: Mystery Gift</h2>
+   <p>One gift has birthday luck. Pick your favourite!</p>
+   <button class="gift" onclick="pickGift(0)">🎁 Gift A</button>
+   <button class="gift" onclick="pickGift(1)">🎀 Gift B</button>
+   <button class="gift" onclick="pickGift(2)">🧸 Gift C</button>
+   <p class="result" id="giftResult" aria-live="polite"></p>
+  </div>
+
+  <!-- GAME 2 -->
+  <div class="gamebox">
+   <h2>💗 Game 2: Friendship Quiz</h2>
+   <p>Which places are part of our memories?</p>
+   <button class="choice" onclick="answerQuiz(false)">A shopping mall 🛍️</button>
+   <button class="choice" onclick="answerQuiz(true)">ISKCON Temple & Ved Mandir 🌷</button>
+   <button class="choice" onclick="answerQuiz(false)">The Moon 🌙</button>
+   <p class="result" id="quizResult" aria-live="polite"></p>
+  </div>
+
+  <!-- GAME 3 -->
+  <div class="gamebox">
+   <h2>💌 Game 3: Catch the Hearts</h2>
+   <p>Tap the heart five times to win!</p>
+   <p style="font-size:42px;margin:8px">
+    <button id="heartButton" onclick="catchHeart()" aria-label="Catch the heart">💗</button>
+   </p>
+   <p id="heartScore">Hearts caught: 0 / 5</p>
+   <p class="result" id="heartResult" aria-live="polite"></p>
+   <button class="secondary" onclick="resetHearts()">Play again ↻</button>
+  </div>
+
+  <button onclick="go('finale')">I'm ready for the final message 💌</button>
+  <button class="secondary" onclick="go('gifts')">← Back to surprises</button>
+ </div>
+</section>
+
+<!-- FINAL MESSAGE -->
+<section class="screen" id="finale">
+ <div class="card">
+  <div class="big">🧸💗</div>
+  <p class="small">One last thing, Dolla</p>
+  <h1>Happy Birthday,<br><span>Dolla!</span> 🥹</h1>
+
+  <div class="message">
+   <p>And that's the end of your little birthday surprise. 🎀</p>
+
+   <p>I wish I could fit every laugh, every random conversation, and every tiny moment of our friendship into this page. But even then, it wouldn't be enough to explain how much I value having you in my life. 🤍</p>
+
+   <p>Thank you for the memories, the chai moments, our conversations at Ved Mandir, and all the nonsense that somehow becomes the best part of the day. ☕😂</p>
+
+   <p>I hope your year is filled with happiness, peace, success, and lovely surprises. Keep chasing your dreams and remember how special you are. 🌷✨</p>
+
+   <p>Here's to more places to visit, more stories to share, more laughs, and a friendship that keeps growing with us. One day we'll be old ladies, still teasing each other and laughing at our own jokes. 😂♾️</p>
+  </div>
+
+  <div class="shayari">
+   Rishta apna lafzon ka mohtaaj nahi, 💗<br>
+   Dosti apni kisi naam ki mohtaaj nahi, 🫶🏻<br>
+   Saalo beet gaye, phir bhi dil kehte hain, 🥹<br>
+   Tu hai toh kisi aur ki talaash nahi. ♾️🤍
+  </div>
+
+  <p>Happy birthday, Dolla! Love you lots. 💗</p>
+  <p><b>Your friend, Hetvi 🫶🏻</b></p>
+
+  <button onclick="celebrate()">One last celebration! 🎉</button>
+  <button class="secondary" onclick="go('gifts')">Play again ↺</button>
+ </div>
+</section>
+
+<script>
+/* Fun password screen only; not real website security. */
+const PASSWORD = "dolla";
+
+document.getElementById("unlockForm").addEventListener("submit", function(e) {
+ e.preventDefault();
+
+ const entered = document.getElementById("password").value.trim();
+
+ if (entered.toLowerCase() === PASSWORD) {
+  document.getElementById("error").textContent = "";
+  document.getElementById("password").value = "";
+  go("reveal");
+  celebrate();
+ } else {
+  document.getElementById("error").textContent =
+   "Not quite! Try again, Dolla 💗";
+ }
+});
+
+function go(id) {
+ document.querySelectorAll(".screen").forEach(s =>
+  s.classList.remove("active")
+ );
+ document.getElementById(id).classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* Mystery Gift Game */
+function pickGift(n) {
+ const lucky = Math.floor(Math.random()*3);
+ const result = document.getElementById("giftResult");
+
+ if(n === lucky) {
+  result.textContent =
+   "✨ YOU FOUND THE LUCKY GIFT! Your birthday wish has extra sparkle! 💗";
+ } else {
+  const messages = [
+   "So close! This gift contains 100 imaginary hugs 🫂",
+   "A cute surprise: unlimited friendship points 💖",
+   "Not the lucky one—but you still get cake! 🎂"
+  ];
+  result.textContent = messages[n];
+ }
+}
+
+/* Friendship Quiz */
+function answerQuiz(correct) {
+ const result = document.getElementById("quizResult");
+
+ if(correct) {
+  result.textContent =
+   "Correct! 🌷 Our memories are the real prize! +100 friendship points!";
+ } else {
+  result.textContent =
+   "Nope 😂 Try again! Think of our real-life memories. 💗";
+ }
+}
+
+/* Catch the Hearts Game */
+let hearts = 0;
+
+function catchHeart() {
+ if(hearts >= 5) return;
+
+ hearts++;
+
+ document.getElementById("heartScore").textContent =
+  "Hearts caught: " + hearts + " / 5";
+
+ if(hearts === 5) {
+  document.getElementById("heartResult").textContent =
+   "You caught them all! Your friendship level is LEGENDARY. ♾️💗";
+  document.getElementById("heartButton").textContent = "💖";
+ } else {
+  const heartEmojis = ["💗","💖","💕","💘","💝"];
+  document.getElementById("heartButton").textContent =
+   heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+ }
+}
+
+function resetHearts() {
+ hearts = 0;
+ document.getElementById("heartScore").textContent =
+  "Hearts caught: 0 / 5";
+ document.getElementById("heartResult").textContent = "";
+ document.getElementById("heartButton").textContent = "💗";
+}
+
+/* Birthday Confetti */
+function celebrate() {
+ const area = document.getElementById("confetti");
+ const symbols = ["♥","✦","🎉","♡","✨","🌷"];
+ const colors = ["#d84f83","#ffcc70","#a6c8a0","#c9a8eb","#ff9685"];
+
+ for(let i=0; i<65; i++) {
+  const piece = document.createElement("span");
+  piece.className = "piece";
+  piece.textContent =
+   symbols[Math.floor(Math.random()*symbols.length)];
+  piece.style.left = Math.random()*100 + "vw";
+  piece.style.color =
+   colors[Math.floor(Math.random()*colors.length)];
+  piece.style.animationDelay = Math.random()*1.2 + "s";
+  piece.style.fontSize = (12+Math.random()*18) + "px";
+
+  area.appendChild(piece);
+  setTimeout(() => piece.remove(), 4800);
+ }
+}
+</script>
+</body>
+</html>
